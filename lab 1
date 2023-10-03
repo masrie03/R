@@ -1,0 +1,57 @@
+getwd()
+churn <- read.csv("C:/Users/masri/OneDrive/Documents/Churn_Train.csv")
+#check for missing values
+
+
+#replace the missing value
+churn <- churn %>%
+  mutate(Total.Charges=replace(Total.Charges, is.na(Total.Charges), median(Total.Charges, na.rm=T)))
+is.na(churn$Total.Charges)
+
+which(is.na(churn$`Total Charges`))
+
+describe(churn)
+
+#plot normality
+plot_normality(churn, Monthly.Charges)
+
+#test normality
+normality(churn)
+normality(churn, Monthly.Charges)
+
+#calculate correlate
+correlate(churn)
+correlate(churn)
+
+#plot correlation
+churn %>%
+  correlate() %>%
+  plot()
+
+correlate(churn, Monthly.Charges,Total.Charges) %>%
+  plot()
+
+#EDA based on target variable
+categ <- target_by(churn, Tenure)
+
+#EDA when target variable is categorical, predictor is numerical
+cat_num <- relate(categ, Monthly.Charges)
+cat_num
+summary(cat_num)
+plot(cat_num)
+
+#EDA when target variable is numerical, predictor is categorical 
+cat_cat <- relate(categ,Dependents)
+cat_cat
+summary(cat_cat)
+plot(cat_cat)
+
+#EDA when target variable is numerical, predictor is numerical
+num<-target_by(churn,Monthly.Charges)
+num_num<-relate(num,Total.Charges)
+num_num
+summary(num_num)
+plot(num_num)
+
+#create eda report
+eda_web_report(churn)
